@@ -56,7 +56,7 @@ const getAddrFmt = async (countryCode) => {
 const saveToFile = (json, countryCode) => {
   try {
     const text = JSON.stringify(json, null, 2);
-    const data = fs.writeFileSync(countryCode + ".json", text);
+    const data = fs.writeFileSync(`address_data/${countryCode}.json`, text);
   } catch (err) {
     console.error(err);
   }
