@@ -30,7 +30,6 @@ jobs:
       - name: Run a multi-line script
         run: |
           npm install
-          node get-addr-formats.js
-          git add .
-          git commit -m "add address formats"
-          git push
+          node get-addr-fmts.js
+          git config --global user.name $GITHUB_ACTOR
+          git add . && git commit -m "Update market news" && git push
