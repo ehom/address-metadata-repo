@@ -5,9 +5,9 @@ const fs = require("fs");
 
 const BASE_URL = "https://chromium-i18n.appspot.com/ssl-address/data";
 
-(async () => {
+(async (url) => {
   try {
-    const response = await fetch(BASE_URL);
+    const response = await fetch(url);
     const json = await response.json()
 
     console.log(json);
@@ -20,7 +20,7 @@ const BASE_URL = "https://chromium-i18n.appspot.com/ssl-address/data";
   } catch (error) {
     console.log("Error:", error);
   }
-})();
+})(BASE_URL);
 
 const getAddressFormats = async (countries) => {
   const BATCH_SIZE = 2;
@@ -56,7 +56,8 @@ const getAddrFmt = async (countryCode) => {
 const saveToFile = (json, countryCode) => {
   try {
     const text = JSON.stringify(json, null, 2);
-    const data = fs.writeFileSync(`raw_data/${countryCode}.json`, text);
+    const filepath = `raw_data/${countryCode}.json`;
+    const data = fs.writeFileSync(filepath, text);
   } catch (err) {
     console.error(err);
   }

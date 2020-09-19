@@ -28,7 +28,7 @@ jobs:
       - name: Download the address data
         run: |
           npm install
-          node get-addr-fmts.js
+          node get-address-data.js
           git config --global user.name $GITHUB_ACTOR
           git diff --quiet && git diff --staged --quiet || git commit -am "Update address data"
           git push

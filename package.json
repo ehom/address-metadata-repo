@@ -1,8 +1,8 @@
 {
-  "name": "get-addr-fmts",
+  "name": "get-address-data",
   "version": "1.0.0",
   "description": "Retrieves Address Formats from Google Address Data Service",
-  "main": "get-addr-fmts.js",
+  "main": "get-address-data.js",
   "dependencies": {
     "node-fetch": "^2.6.1",
     "typescript": "^4.0.2"
