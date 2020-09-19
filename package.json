@@ -1,0 +1,17 @@
+{
+  "name": "get-addr-fmts",
+  "version": "1.0.0",
+  "description": "Retrieves Address Formats from Google Address Data Service",
+  "main": "get-addr-fmts.js",
+  "dependencies": {
+    "node-fetch": "^2.6.1",
+    "typescript": "^4.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "ehom",
+  "license": "ISC"
+}
