@@ -10,7 +10,7 @@ const BASE_URL = "https://chromium-i18n.appspot.com/ssl-address/data";
     const response = await fetch(url);
     const json = await response.json()
 
-    console.log(json);
+    console.debug(json);
 
     let countries = json['countries'].split('~');
     console.table(countries);
@@ -18,7 +18,7 @@ const BASE_URL = "https://chromium-i18n.appspot.com/ssl-address/data";
     countries.push('ZZ');
     getAddressFormats(countries);
   } catch (error) {
-    console.log("Error:", error);
+    console.error(error);
   }
 })(BASE_URL);
 
@@ -40,16 +40,17 @@ const getAddressFormats = async (countries) => {
 // Get Address Format given the specified countryCode
 // Returns a Promise
 const getAddrFmt = async (countryCode) => {
-  const url = `${BASE_URL}/${countryCode}`;
-  console.log(url);
+  const URL = `${BASE_URL}/${countryCode}`;
+  console.debug(URL);
+
   try {
-    const response = await fetch(url);
+    const response = await fetch(URL);
     const json = await response.json();
-    console.log(json);
+    console.debug(json);
     saveToFile(json, countryCode);
     return json;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }
 
