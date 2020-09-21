@@ -2,8 +2,14 @@
 
 const fetch = require("node-fetch");
 const fs = require("fs");
+const helpers = require("./helpers.js");
 
 const BASE_URL = "https://chromium-i18n.appspot.com/ssl-address/data";
+
+const OUTPUT_DIR = 'generated';
+!fs.existsSync(OUTPUT_DIR) && fs.mkdirSync(OUTPUT_DIR);
+
+// Get the list of countries first
 
 (async (url) => {
   try {
@@ -22,12 +28,22 @@ const BASE_URL = "https://chromium-i18n.appspot.com/ssl-address/data";
   }
 })(BASE_URL);
 
+
 const getAddressFormats = async (countries) => {
+  let lookupTable = helpers.createLookupTable();
+
   const BATCH_SIZE = 2;
   for (let i = 0; i < countries.length; i += BATCH_SIZE) {
-    const requests = countries.slice(i, i + BATCH_SIZE).map((country) => { 
-      return getAddrFmt(country) // Async function to get the address format.
-       .catch(e => console.log(`Error in get address format for ${country} - ${e}`)) ;
+    const requests = countries.slice(i, i + BATCH_SIZE).map((countryCode) => {
+      return getAddrFmt(countryCode) // Async function to get the address format.
+       .then((response) => {
+         if (response['name']) {
+           lookupTable.store(countryCode, response['name']);
+         }
+         const filePath = `raw_data/${countryCode}.json`;
+         helpers.createFileWriter(filePath).write(response);
+       })
+       .catch(e => console.log(`Error in get address format for ${countryCode} - ${e}`)) ;
        // Catch the error if something goes wrong. So that it won't block the loop.
     });
 
@@ -35,7 +51,8 @@ const getAddressFormats = async (countries) => {
       console.log("Processed a batch");
     });
   }
-}
+  lookupTable.writeTo('generated/countries.json');
+};
 
 // Get Address Format given the specified countryCode
 // Returns a Promise
@@ -47,20 +64,9 @@ const getAddrFmt = async (countryCode) => {
     const response = await fetch(URL);
     const json = await response.json();
     console.debug(json);
-    saveToFile(json, countryCode);
     return json;
   } catch (error) {
     console.error(error);
-  }
-}
-
-const saveToFile = (json, countryCode) => {
-  try {
-    const text = JSON.stringify(json, null, 2);
-    const filepath = `raw_data/${countryCode}.json`;
-    const data = fs.writeFileSync(filepath, text);
-  } catch (err) {
-    console.error(err);
   }
 }
 
