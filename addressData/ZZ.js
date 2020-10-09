@@ -1,4 +1,6 @@
-ehom.i18n.addressData['undefined'] = {
+var ehom = ehom || {i18n: {addressData: {}}};
+
+ehom.i18n.addressData['ZZ'] = {
   "id": "data/ZZ",
   "fmt": "%N%n%O%n%A%n%C",
   "require": "AC",

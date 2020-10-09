@@ -1,3 +1,5 @@
+ehom = ehom || {i18n: {addressData: {}}};
+
 ehom.i18n.addressData['CA'] = {
   "id": "data/CA",
   "key": "CA",
