@@ -4,7 +4,7 @@
   "name": "IRELAND",
   "lang": "en",
   "languages": "en",
-  "fmt": "%N%n%O%n%A%n%D%n%C%n%S %Z",
+  "fmt": "%N%n%O%n%A%n%D%n%C%n%S%n%Z",
   "zip": "[\\dA-Z]{3} ?[\\dA-Z]{4}",
   "zipex": "A65 F4E2",
   "posturl": "https://finder.eircode.ie",
