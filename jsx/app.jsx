@@ -104,66 +104,42 @@ function AddressEntryForm(properties) {
   const addressData = ehom.i18n.addressData[properties.countryCode];
   const defaultData = ehom.i18n.addressData['ZZ'];
 
-  const output = parts.map((part) => {
-    let temp;
-    // TODO use lookup table instead
-    switch(part.type) {
-    case 'name':
+  const lookupTable = {
+    name: () => <p><input type="text" className="form-control" placeholder="Name" /></p>,
+    organization: () => <p><input type="text" className="form-control" placeholder="Organization" /></p>,
+    address: () => <p><input type="text" className="form-control" placeholder="Address" /></p>,
+    city: () => {
       return (
-        <React.Fragment>
-          <p><input type="text" className="form-control" placeholder="Name" /></p>
-        </React.Fragment>
+        <p><input type="text" className="form-control" placeholder="City" /></p>
       );
-    case 'organization':
+    },
+    sublocality: () => {
+      let temp = addressData.sublocality_name_type || defaultData.sublocality_name_type;
       return (
-        <React.Fragment>
-          <p><input type="text" className="form-control" placeholder="Organization" /></p>
-        </React.Fragment>
+        <p><input type="text" className="form-control" placeholder={temp} /></p>
       );
-    case 'address':
+    },
+    state: () => {
+      let temp = addressData.state_name_type || defaultData.state_name_type;
       return (
-        <React.Fragment>
-          <p><input type="text" className="form-control" placeholder="Address" /></p>
-        </React.Fragment>
+        <p><input type="text" className="form-control" placeholder={temp} /></p>
       );
-    case 'city':
-      return (
-        <React.Fragment>
-          <p><input type="text" className="form-control" placeholder="City" /></p>
-        </React.Fragment>
-      );
-    case 'sublocality':
-      temp = addressData.sublocality_name_type || defaultData.sublocality_name_type;
-      return (
-        <React.Fragment>
-          <p><input type="text" className="form-control" placeholder={temp} /></p>
-        </React.Fragment>
-      );
-    case 'state':
-      temp = addressData.state_name_type || defaultData.state_name_type;
-      return (
-        <React.Fragment>
-          <p><input type="text" className="form-control" placeholder={temp} /></p>
-        </React.Fragment>
-      );
-    case 'postalCode':
-      temp = addressData.zip_name_type || defaultData.zip_name_type;
+    },
+    postalCode: () => {
+      let temp = addressData.zip_name_type || defaultData.zip_name_type;
       temp = `${temp} code`;
       return (
-        <React.Fragment>
-          <p><input type="text" className="form-control" placeholder={temp} /></p>
-        </React.Fragment>
+        <p><input type="text" className="form-control" placeholder={temp} /></p>
       );
-    case 'sortCode':
+    },
+    'sortCode': () => {
       return (
-        <React.Fragment>
-          <p><input type="text" className="form-control" placeholder="Sort code" /></p>
-        </React.Fragment>
+        <p><input type="text" className="form-control" placeholder="Sort code" /></p>
       );
-    default:
-      return <React.Fragment></React.Fragment>;
     }
-  });
+  }
+
+  const output = parts.map((part) => lookupTable[part.type]());
 
   return (
     <div>{output}</div>
@@ -195,11 +171,9 @@ function AddressFormatter(countryCode) {
       output = output.replace('%C', brackets(locality_name_type));
 
       output = output.replace("%D",
-          brackets(
-            addressData.sublocality_name_type ? 
-              addressData.sublocality_name_type: 
-              defaultData.sublocality_name_type
-          )
+        addressData.sublocality_name_type ? 
+          brackets(addressData.sublocality_name_type):
+          brackets(defaultData.sublocality_name_type)
       );
 
       output = output.replace("%S", 
@@ -213,32 +187,25 @@ function AddressFormatter(countryCode) {
 
       return output.split("\n");
     },
-    formatToParts: function(object) {
-      let fmt = ehom.i18n.addressData[countryCode].fmt;
-      let parts = fmt.match(/%[N,O,A,D,C,S,Z,X]/g);
 
-      console.log(parts);
-      let result = parts.map((part) => {
-        switch(part) {
-        case '%N':
-          return {type: 'name', value: ''};
-        case '%O':
-          return {type: 'organization', value: ''};
-        case '%C':
-          return {type: 'city', value: ''};
-        case '%D':
-          return {type: 'sublocality', value: ''};
-        case '%S':
-          return {type: 'state', value: ''};
-        case '%Z':
-          return {type: 'postalCode', value: ''};
-        case '%X':
-          return {type: 'sortCode', value: ''};
-        case '%A':
-          return {type: 'address', value: ''};
-        default:
-          return {type: 'none', value: ''};
-        }
+    formatToParts: function(object) {
+      const fmt = ehom.i18n.addressData[countryCode].fmt;
+      const parts = fmt.match(/%[N,O,A,D,C,S,Z,X]/g);
+      console.debug(parts);
+
+      const table = {
+        '%N': {type: 'name', value: ''},
+        '%O': {type: 'organization', value: ''},
+        '%A': {type: 'address', value: ''},
+        '%C': {type: 'city', value: ''},
+        '%D': {type: 'sublocality', value: ''},
+        '%S': {type: 'state', value: ''},
+        '%Z': {type: 'postalCode', value: ''},
+        '%X': {type: 'sortCode', value: ''}
+      };
+
+      const result = parts.map((part) => {
+          return table[part];
       });
       return result;
     }
