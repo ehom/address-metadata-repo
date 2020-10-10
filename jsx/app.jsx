@@ -101,9 +101,12 @@ function AddressEntryForm(properties) {
   const parts = AddressFormatter(properties.countryCode).formatToParts(properties.address);
   console.debug(parts);
 
+  const addressData = ehom.i18n.addressData[properties.countryCode];
+  const defaultData = ehom.i18n.addressData['ZZ'];
+
   const output = parts.map((part) => {
     let temp;
-
+    // TODO use lookup table instead
     switch(part.type) {
     case 'name':
       return (
@@ -130,23 +133,25 @@ function AddressEntryForm(properties) {
         </React.Fragment>
       );
     case 'sublocality':
-      temp = ehom.i18n.addressData[properties.countryCode].sublocality_name_type || ehom.i18n.addressData['ZZ'].sublocality_name_type;
+      temp = addressData.sublocality_name_type || defaultData.sublocality_name_type;
       return (
         <React.Fragment>
           <p><input type="text" className="form-control" placeholder={temp} /></p>
         </React.Fragment>
       );
     case 'state':
-      temp = ehom.i18n.addressData[properties.countryCode].state_name_type || ehom.i18n.addressData['ZZ'].state_name_type;
+      temp = addressData.state_name_type || defaultData.state_name_type;
       return (
         <React.Fragment>
           <p><input type="text" className="form-control" placeholder={temp} /></p>
         </React.Fragment>
       );
     case 'postalCode':
+      temp = addressData.zip_name_type || defaultData.zip_name_type;
+      temp = `${temp} code`;
       return (
         <React.Fragment>
-          <p><input type="text" className="form-control" placeholder="Postal code" /></p>
+          <p><input type="text" className="form-control" placeholder={temp} /></p>
         </React.Fragment>
       );
     case 'sortCode':
@@ -216,23 +221,23 @@ function AddressFormatter(countryCode) {
       let result = parts.map((part) => {
         switch(part) {
         case '%N':
-          return {type: 'name', value: '' };
+          return {type: 'name', value: ''};
         case '%O':
-          return {type: 'organization', value: '' };
+          return {type: 'organization', value: ''};
         case '%C':
-          return {type: 'city', value: '' };
+          return {type: 'city', value: ''};
         case '%D':
-          return {type: 'sublocality', value: '' };
+          return {type: 'sublocality', value: ''};
         case '%S':
-          return {type: 'state', value: '' };
+          return {type: 'state', value: ''};
         case '%Z':
-          return {type: 'postalCode', value: '' };
+          return {type: 'postalCode', value: ''};
         case '%X':
-          return {type: 'sortCode', value: '' };
+          return {type: 'sortCode', value: ''};
         case '%A':
-          return {type: 'address', value: '' };
+          return {type: 'address', value: ''};
         default:
-          return {type: 'none', value: '' };
+          return {type: 'none', value: ''};
         }
       });
       return result;
