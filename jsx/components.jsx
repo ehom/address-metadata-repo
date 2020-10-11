@@ -30,13 +30,21 @@ function AddressEntryForm(properties) {
   const addressData = ehom.i18n.addressData[properties.countryCode];
   const defaultData = ehom.i18n.addressData['ZZ'];
 
+  const require = addressData.require || defaultData.require;
+
   const lookupTable = {
-    name: () => <p><input type="text" className="form-control" placeholder="Name" /></p>,
-    organization: () => <p><input type="text" className="form-control" placeholder="Organization" /></p>,
-    address: () => <p><input type="text" className="form-control" placeholder="Address" /></p>,
-    city: () => {
+    name: () => <p><input type="text" className="form-control" placeholder="name" /></p>,
+    organization: () => <p><input type="text" className="form-control" placeholder="organization" /></p>,
+    address: () => {
+      const text = require.indexOf('A') >= 0 ? "address (required)" : "address";
       return (
-        <p><input type="text" className="form-control" placeholder="City" /></p>
+        <p><input type="text" className="form-control" placeholder={text} /></p>
+      );
+    },
+    city: () => {
+      const text = require.indexOf('C') >= 0 ? "city (required)" : "city";
+      return (
+        <p><input type="text" className="form-control" placeholder={text} /></p>
       );
     },
     sublocality: () => {
@@ -46,21 +54,24 @@ function AddressEntryForm(properties) {
       );
     },
     state: () => {
-      let temp = addressData.state_name_type || defaultData.state_name_type;
+      let text = addressData.state_name_type || defaultData.state_name_type;
+      text = require.indexOf('S') >= 0 ? `${text} (required)` : text;
+
       return (
-        <p><input type="text" className="form-control" placeholder={temp} /></p>
+        <p><input type="text" className="form-control" placeholder={text} /></p>
       );
     },
     postalCode: () => {
-      let temp = addressData.zip_name_type || defaultData.zip_name_type;
-      temp = `${temp} code`;
+      let name = addressData.zip_name_type || defaultData.zip_name_type;
+      name = require.indexOf('Z') >= 0 ? `${name} code (required)` : `${name} code`
+      
       return (
-        <p><input type="text" className="form-control" placeholder={temp} /></p>
+        <p><input type="text" className="form-control" placeholder={name} /></p>
       );
     },
     'sortCode': () => {
       return (
-        <p><input type="text" className="form-control" placeholder="Sort code" /></p>
+        <p><input type="text" className="form-control" placeholder="sort code" /></p>
       );
     }
   }
