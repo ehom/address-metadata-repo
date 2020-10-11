@@ -42,7 +42,9 @@ function AddressEntryForm(properties) {
       );
     },
     city: () => {
-      const text = require.indexOf('C') >= 0 ? "city (required)" : "city";
+      let text = addressData.locality_name_type || defaultData.locality_name_type;
+      text = require.indexOf('C') >= 0 ? `${text} (required)` : text;
+
       return (
         <p><input type="text" className="form-control" placeholder={text} /></p>
       );
