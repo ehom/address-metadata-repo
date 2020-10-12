@@ -15,15 +15,17 @@ function App(properties) {
           </div>
         </div>
       </div>
-      <div className="container mb-3">
-        <h4>output forms</h4>
-        <p className="mb-2 text-muted">Local format</p>
-        <div id="addressFormat"></div>
-      </div>
-      <div className="container">
-        <h4>input forms</h4>
-        <p className="mb-2 text-muted">Local format</p>
-        <div id="addressEntry"></div>
+      <div className="row mb-5">
+        <div class="col-md-6">
+          <h4>input forms</h4>
+          <p className="mb-2 text-muted">Local format</p>
+          <div id="addressEntry"></div>
+        </div>
+        <div class="col-md-6">
+            <h4>output forms</h4>
+            <p className="mb-2 text-muted">Local format</p>
+            <div id="addressFormat"></div>
+        </div>
       </div>
     </React.Fragment>
   );
