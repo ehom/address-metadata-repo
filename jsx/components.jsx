@@ -59,6 +59,30 @@ function AddressEntryForm(properties) {
       let text = addressData.state_name_type || defaultData.state_name_type;
       text = require.indexOf('S') >= 0 ? `${text} (required)` : text;
 
+      if (addressData.sub_keys) {
+        const sub_keys = addressData.sub_keys.split('~');
+        console.debug(sub_keys);
+
+        let sub_names = [];
+        if (addressData.sub_lnames) {
+           sub_names = addressData.sub_lnames.split('~') 
+        } else if (addressData.sub_names) {
+           sub_names = addressData.sub_names.split('~');
+        } else {
+           sub_names = sub_keys;
+        }
+        const options = sub_keys.map((sub_key, index) => {
+          return <option value={sub_key}>{sub_names[index]}</option>;
+        });
+
+        return (
+          <p><select className="form-control">
+            <option>{text}</option>
+          {options}
+         </select></p>
+        );
+      } 
+
       return (
         <p><input type="text" className="form-control" placeholder={text} /></p>
       );
