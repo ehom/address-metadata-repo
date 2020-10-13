@@ -33,12 +33,14 @@ function AddressEntryForm(properties) {
   const require = addressData.require || defaultData.require;
 
   const lookupTable = {
-    name: () => <p><input type="text" className="form-control" placeholder="name" /></p>,
-    organization: () => <p><input type="text" className="form-control" placeholder="organization" /></p>,
+    name: () => <p className="mb-2"><input type="text" className="form-control mb-0" placeholder="name" /></p>,
+    organization: () => <p className="mb-2"><input type="text" className="form-control mb-0" placeholder="organization" /></p>,
     address: () => {
       const text = require.indexOf('A') >= 0 ? "address (required)" : "address";
       return (
-        <p><input type="text" className="form-control" placeholder={text} /></p>
+        <p className="mb-2">
+          <input type="text" className="form-control mb-0" placeholder={text} />
+        </p>
       );
     },
     city: () => {
@@ -46,13 +48,17 @@ function AddressEntryForm(properties) {
       text = require.indexOf('C') >= 0 ? `${text} (required)` : text;
 
       return (
-        <p><input type="text" className="form-control" placeholder={text} /></p>
+        <p className="mb-2">
+          <input type="text" className="form-control mb-0" placeholder={text} />
+        </p>
       );
     },
     sublocality: () => {
       let temp = addressData.sublocality_name_type || defaultData.sublocality_name_type;
       return (
-        <p><input type="text" className="form-control" placeholder={temp} /></p>
+        <p className="mb-2">
+          <input type="text" className="form-control mb-0" placeholder={temp} />
+        </p>
       );
     },
     state: () => {
@@ -76,15 +82,19 @@ function AddressEntryForm(properties) {
         });
 
         return (
-          <p><select className="form-control">
-            <option>{text}</option>
-          {options}
-         </select></p>
+          <p className="mb-2">
+            <select className="form-control mb-0">
+              <option>{text}</option>
+              {options}
+            </select>
+          </p>
         );
       } 
 
       return (
-        <p><input type="text" className="form-control" placeholder={text} /></p>
+        <p className="mb-2">
+          <input type="text" className="form-control mb-0" placeholder={text} />
+        </p>
       );
     },
     postalCode: () => {
@@ -92,12 +102,16 @@ function AddressEntryForm(properties) {
       name = require.indexOf('Z') >= 0 ? `${name} code (required)` : `${name} code`
       
       return (
-        <p><input type="text" className="form-control" placeholder={name} /></p>
+        <p className='mb-2'>
+          <input type='text' className='form-control mb-0' placeholder={name} />
+        </p>
       );
     },
     'sortCode': () => {
       return (
-        <p><input type="text" className="form-control" placeholder="sort code" /></p>
+        <p className="mb-2">
+          <input type="text" className="form-control mb-0" placeholder="sort code" />
+        </p>
       );
     }
   }
