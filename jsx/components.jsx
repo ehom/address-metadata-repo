@@ -63,6 +63,8 @@ function AddressEntryForm(properties) {
       let text = addressData.state_name_type || defaultData.state_name_type;
       text = require.indexOf('S') >= 0 ? `${text} (required)` : text;
 
+      let datalist;
+
       if (addressData.sub_keys) {
         const sub_keys = addressData.sub_keys.split('~');
         console.debug(sub_keys);
@@ -79,19 +81,17 @@ function AddressEntryForm(properties) {
           return <option value={sub_key}>{sub_names[index]}</option>;
         });
 
-        return (
-          <p className="mb-2">
-            <select className="form-control mb-0">
-              <option>{text}</option>
-              {options}
-            </select>
-          </p>
+        datalist = (
+          <datalist id="states">
+            {options}
+          </datalist>
         );
-      } 
-
+      }
+      console.debug("datalist: ", datalist);
       return (
         <p className="mb-2">
-          <input type="text" name="state" autocomplete="on" className="form-control mb-0" placeholder={text} required />
+          <input type="text" name="state" autocomplete="off" list="states" className="form-control mb-0" placeholder={text} required />
+          {datalist}
         </p>
       );
     },
@@ -112,9 +112,10 @@ function AddressEntryForm(properties) {
         </p>
       );
     }
-  }
+  };
 
   const output = parts.map((part) => lookupTable[part.type]());
+  console.debug("form: ", output);
 
   return (
     <div>
