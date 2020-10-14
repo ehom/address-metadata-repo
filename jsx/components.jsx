@@ -18,9 +18,7 @@ function AddressFormat(properties) {
     );
   });
 
-  return (
-    <div>{result}</div>
-  );
+  return <div>{result}</div>;
 }
 
 function AddressEntryForm(properties) {
@@ -33,13 +31,13 @@ function AddressEntryForm(properties) {
   const require = addressData.require || defaultData.require;
 
   const lookupTable = {
-    name: () => <p className="mb-2"><input type="text" className="form-control mb-0" placeholder="name" /></p>,
+    name: () => <p className="mb-2"><input type="text" name="name" autocomplete="on" className="form-control mb-0" placeholder="name" /></p>,
     organization: () => <p className="mb-2"><input type="text" className="form-control mb-0" placeholder="organization" /></p>,
     address: () => {
       const text = require.indexOf('A') >= 0 ? "address (required)" : "address";
       return (
         <p className="mb-2">
-          <input type="text" className="form-control mb-0" placeholder={text} />
+          <input type="text" name="address-1" autocomplete="on" className="form-control mb-0" placeholder={text} required />
         </p>
       );
     },
@@ -49,7 +47,7 @@ function AddressEntryForm(properties) {
 
       return (
         <p className="mb-2">
-          <input type="text" className="form-control mb-0" placeholder={text} />
+          <input type="text" name="city" autocomplete="on" className="form-control mb-0" placeholder={text} required />
         </p>
       );
     },
@@ -93,7 +91,7 @@ function AddressEntryForm(properties) {
 
       return (
         <p className="mb-2">
-          <input type="text" className="form-control mb-0" placeholder={text} />
+          <input type="text" name="state" autocomplete="on" className="form-control mb-0" placeholder={text} required />
         </p>
       );
     },
@@ -103,7 +101,7 @@ function AddressEntryForm(properties) {
       
       return (
         <p className='mb-2'>
-          <input type='text' className='form-control mb-0' placeholder={name} />
+          <input type='text' name="zip" className='form-control mb-0' placeholder={name} />
         </p>
       );
     },
@@ -137,9 +135,9 @@ function AddressFormatter(countryCode) {
       const defaultData = ehom.i18n.addressData['ZZ'];
 
       let fmt = ehom.i18n.addressData[countryCode].fmt;
-      let output = fmt.replace("%N", "[person's name]")
+      let output = fmt.replace("%N", "[name]")
                       .replace("%O", '[organization]')
-                      .replace("%A", '[address line]')
+                      .replace("%A", '[address]')
                       .replace(/%n/g, '\n')
                       .replace('%X', '[sort code]')
 

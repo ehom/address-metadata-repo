@@ -18,14 +18,14 @@ function App(properties) {
       <div className="row mb-5">
         <div class="col-md-6">
           <h4>input forms</h4>
-          <div className="container border border-dark rounded pt-3 pb-4">
+          <div className="container border border-dark rounded pt-4 pb-5">
             <p className="mb-2 text-muted">Local format</p>
             <div id="addressEntry"></div>
           </div>
         </div>
         <div className="col-md-6">
           <h4>output forms</h4>
-          <div className="container border border-dark rounded pt-3 pb-4">
+          <div className="container border border-dark rounded pt-4 pb-5">
              <p className="mb-2 text-muted">Local format</p>
              <div id="addressFormat"></div>
           </div>
