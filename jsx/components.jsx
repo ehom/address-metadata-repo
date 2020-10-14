@@ -117,7 +117,9 @@ function AddressEntryForm(properties) {
   const output = parts.map((part) => lookupTable[part.type]());
 
   return (
-    <div>{output}</div>
+    <div>
+      <form>{output}</form>
+    </div>
   );
 }
 
