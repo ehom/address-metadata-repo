@@ -146,7 +146,7 @@ function AddressFormatter(countryCode) {
                       .replace("%O", '[organization]')
                       .replace("%A", '[address]')
                       .replace(/%n/g, '\n')
-                      .replace('%X', '[sort code]')
+                      .replace(/%X/g, '[sort code]')
 
       const locality_name_type = addressData.locality_name_type ?
         addressData.locality_name_type : defaultData.locality_name_type; 
