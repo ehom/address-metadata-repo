@@ -25,6 +25,9 @@ function AddressEntryForm(properties) {
   const parts = AddressFormatter(properties.countryCode).formatToParts(properties.address);
   console.debug(parts);
 
+  // TODO: need to get specified format passed down
+  const localFormat = true;
+
   const addressData = ehom.i18n.addressData[properties.countryCode];
   const defaultData = ehom.i18n.addressData['ZZ'];
 
@@ -37,7 +40,7 @@ function AddressEntryForm(properties) {
       const text = require.indexOf('A') >= 0 ? "address (required)" : "address";
       return (
         <p className="mb-2">
-          <input type="text" name="address-1" autocomplete="on" className="form-control mb-0" placeholder={text} required />
+          <input type="text" name="address-1" className="form-control mb-0" placeholder={text} value="" required />
         </p>
       );
     },
@@ -47,7 +50,7 @@ function AddressEntryForm(properties) {
 
       return (
         <p className="mb-2">
-          <input type="text" name="city" autocomplete="on" className="form-control mb-0" placeholder={text} required />
+          <input type="text" name="city" className="form-control mb-0" placeholder={text} value="" required />
         </p>
       );
     },
@@ -55,7 +58,7 @@ function AddressEntryForm(properties) {
       let temp = addressData.sublocality_name_type || defaultData.sublocality_name_type;
       return (
         <p className="mb-2">
-          <input type="text" className="form-control mb-0" placeholder={temp} />
+          <input type="text" className="form-control mb-0" placeholder={temp} value="" />
         </p>
       );
     },
@@ -63,15 +66,19 @@ function AddressEntryForm(properties) {
       let text = addressData.state_name_type || defaultData.state_name_type;
       text = require.indexOf('S') >= 0 ? `${text} (required)` : text;
 
+      // if sub_keys exists, that means there is a list available
       if (addressData.sub_keys) {
         const sub_keys = addressData.sub_keys.split('~');
         console.debug(sub_keys);
 
+        // if local format is required
+        // check sub_names first
+
         let sub_names = [];
-        if (addressData.sub_lnames) {
-           sub_names = addressData.sub_lnames.split('~') 
-        } else if (addressData.sub_names) {
+        if (addressData.sub_names) {
            sub_names = addressData.sub_names.split('~');
+        } else if (!localFormat && addressData.sub_lnames) {
+           sub_names = addressData.sub_lnames.split('~');
         } else {
            sub_names = sub_keys;
         }
@@ -95,17 +102,19 @@ function AddressEntryForm(properties) {
           <input type="text"
             name="state"
             className="form-control mb-0"
-            placeholder={text} required />
+            placeholder={text} value="" required />
         </p>
       );
     },
     postalCode: () => {
       let name = addressData.zip_name_type || defaultData.zip_name_type;
-      name = require.indexOf('Z') >= 0 ? `${name} code (required)` : `${name} code`
-      
+      name = require.indexOf('Z') >= 0 ? `${name} code required` : `${name} code`;
+      const examples = addressData.zipex ? addressData.zipex : '';
+      let placeholder = `${name} (${examples})`;
+
       return (
         <p className='mb-2'>
-          <input type='text' name="zip" className='form-control mb-0' placeholder={name} />
+          <input type='text' name="zip" className='form-control mb-0' placeholder={placeholder} pattern={addressData.zip} />
         </p>
       );
     },
