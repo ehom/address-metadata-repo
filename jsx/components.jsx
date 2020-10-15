@@ -40,7 +40,7 @@ function AddressEntryForm(properties) {
       const text = require.indexOf('A') >= 0 ? "address (required)" : "address";
       return (
         <p className="mb-2">
-          <input type="text" name="address-1" className="form-control mb-0" placeholder={text} value="" required />
+          <input type="text" name="address-1" className="form-control mb-0" placeholder={text} required />
         </p>
       );
     },
@@ -50,7 +50,7 @@ function AddressEntryForm(properties) {
 
       return (
         <p className="mb-2">
-          <input type="text" name="city" className="form-control mb-0" placeholder={text} value="" required />
+          <input type="text" name="city" className="form-control mb-0" placeholder={text} required />
         </p>
       );
     },
@@ -58,7 +58,7 @@ function AddressEntryForm(properties) {
       let temp = addressData.sublocality_name_type || defaultData.sublocality_name_type;
       return (
         <p className="mb-2">
-          <input type="text" className="form-control mb-0" placeholder={temp} value="" />
+          <input type="text" className="form-control mb-0" placeholder={temp} />
         </p>
       );
     },
