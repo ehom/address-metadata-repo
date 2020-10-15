@@ -63,8 +63,6 @@ function AddressEntryForm(properties) {
       let text = addressData.state_name_type || defaultData.state_name_type;
       text = require.indexOf('S') >= 0 ? `${text} (required)` : text;
 
-      let datalist;
-
       if (addressData.sub_keys) {
         const sub_keys = addressData.sub_keys.split('~');
         console.debug(sub_keys);
@@ -77,21 +75,27 @@ function AddressEntryForm(properties) {
         } else {
            sub_names = sub_keys;
         }
+
         const options = sub_keys.map((sub_key, index) => {
           return <option value={sub_key}>{sub_names[index]}</option>;
         });
 
-        datalist = (
-          <datalist id="states">
-            {options}
-          </datalist>
+        return (
+          <p className="mb-2">
+            <select className="form-control mb-0">
+              <option selected>{text}</option>
+              {options}
+            </select>
+          </p>
         );
       }
-      console.debug("datalist: ", datalist);
+
       return (
         <p className="mb-2">
-          <input type="text" name="state" autocomplete="off" list="states" className="form-control mb-0" placeholder={text} required />
-          {datalist}
+          <input type="text"
+            name="state"
+            className="form-control mb-0"
+            placeholder={text} required />
         </p>
       );
     },
