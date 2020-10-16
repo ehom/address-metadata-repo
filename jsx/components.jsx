@@ -13,12 +13,11 @@ function AddressFormat(properties) {
     
   const result = formatted.map((line) => {
     return (
-      <React.Fragment>{line}<br/>
-      </React.Fragment>
+      <li className="list-group-item">{line}</li>
     );
   });
 
-  return <div>{result}</div>;
+  return <ul className="list-group">{result}</ul>;
 }
 
 function AddressEntryForm(properties) {
