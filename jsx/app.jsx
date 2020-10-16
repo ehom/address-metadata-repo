@@ -16,7 +16,7 @@ function App(properties) {
         </div>
       </div>
       <div className="row mb-5">
-        <div class="col-md-6">
+        <div class="col-md-6 mb-4">
           <h4>input form</h4>
           <div className="container border border-dark rounded pt-4 pb-5">
             <p className="mb-2 text-muted">Local format</p>
