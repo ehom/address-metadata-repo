@@ -13,11 +13,15 @@ function AddressFormat(properties) {
     
   const result = formatted.map((line) => {
     return (
-      <li className="list-group-item">{line}</li>
+      <tr><td>{line}</td></tr>
     );
   });
 
-  return <ul className="list-group">{result}</ul>;
+  return (
+    <table className="table table-bordered table-hover bg-white">
+      <tbody>{result}</tbody>
+    </table>
+  );
 }
 
 function AddressEntryForm(properties) {
