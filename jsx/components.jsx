@@ -110,14 +110,14 @@ function AddressEntryForm(properties) {
       );
     },
     postalCode: () => {
-      let name = addressData.zip_name_type || defaultData.zip_name_type;
-      name = require.indexOf('Z') >= 0 ? `${name} code required` : `${name} code`;
-      const examples = addressData.zipex ? addressData.zipex : '';
-      let placeholder = `${name} (${examples})`;
+      let zip_name = addressData.zip_name_type || defaultData.zip_name_type;
+      zip_name = require.indexOf('Z') >= 0 ? `${zip_name} code required` : `${zip_name} code`;
+      let examples = addressData.zipex ? addressData.zipex.split(',').join(', ') : '';
 
       return (
-        <div className='mb-2' data-toggle="popover" data-placement="bottom" title={examples}>
-          <input type='text' name="zip" className='form-control mb-0' placeholder={placeholder} pattern={addressData.zip} />
+        <div className="mb-1">
+          <input type='text' name="zip" className='form-control mb-0' placeholder={zip_name} pattern={addressData.zip} />
+          <p className="pl-3 mb-0"><small>Examples: {examples}</small></p>
         </div>
       );
     },
