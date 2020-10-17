@@ -116,9 +116,9 @@ function AddressEntryForm(properties) {
       let placeholder = `${name} (${examples})`;
 
       return (
-        <p className='mb-2'>
+        <div className='mb-2' data-toggle="popover" data-placement="bottom" title={examples}>
           <input type='text' name="zip" className='form-control mb-0' placeholder={placeholder} pattern={addressData.zip} />
-        </p>
+        </div>
       );
     },
     'sortCode': () => {
