@@ -3,12 +3,14 @@ function Address() {
   this.org = "[organization]";
   this.addressLine1 = "[address line 1]";
   this.addressLine2 = "[address line 2]";
-  this.city = "[city]";
+  this.city = "city";
   this.state = "[state]";
   this.postalCode = "[postal code]";
 }
 
 function AddressFormat(properties) {
+  // TODO: we might want to populate the new Address.
+
   const formatted = AddressFormatter(properties.countryCode).format(new Address());
     
   const result = formatted.map((line) => {
@@ -152,16 +154,29 @@ function AddressFormatter(countryCode) {
 
       const addressData = ehom.i18n.addressData[countryCode];
       const defaultData = ehom.i18n.addressData['ZZ'];
+      const upperRequired = addressData.upper || defaultData.upper
+
+
+      let address = '[address]';
+
+      if (upperRequired.indexOf("A") !== -1) {
+        address = address.toUpperCase();
+      }
 
       let fmt = ehom.i18n.addressData[countryCode].fmt;
       let output = fmt.replace("%N", "[name]")
                       .replace("%O", '[organization]')
-                      .replace("%A", '[address]')
+                      .replace("%A", address)
                       .replace(/%n/g, '\n')
                       .replace(/%X/g, '[sort code]')
 
-      const locality_name_type = addressData.locality_name_type ?
+      let locality_name_type = addressData.locality_name_type ?
         addressData.locality_name_type : defaultData.locality_name_type; 
+
+      if (upperRequired.indexOf("C") !== -1) {
+        locality_name_type = locality_name_type.toUpperCase();
+      }
+
       output = output.replace('%C', brackets(locality_name_type));
 
       output = output.replace("%D",
@@ -170,11 +185,16 @@ function AddressFormatter(countryCode) {
           brackets(defaultData.sublocality_name_type)
       );
 
-      output = output.replace("%S", 
-        addressData['state_name_type'] ?
+
+      let state_name_type = addressData['state_name_type'] ?
           brackets(addressData.state_name_type):
-          brackets(defaultData.state_name_type)
-      );
+          brackets(defaultData.state_name_type);
+
+      if (upperRequired.indexOf("S") !== -1) {
+        state_name_type = state_name_type.toUpperCase();
+      }
+
+      output = output.replace("%S", state_name_type);
 
       let result = addressData.zip_name_type ? addressData.zip_name_type : defaultData.zip_name_type;
       output = output.replace("%Z", brackets(`${result} code`));
