@@ -1,3 +1,5 @@
+const brackets = (s) => `\u00ab${s}\u00bb`;
+
 function Address() {
   this.name = "[name]";
   this.org = "[organization]";
@@ -146,59 +148,43 @@ function AddressEntryForm(properties) {
 function AddressFormatter(countryCode) {
   return {
     format: function(object) {
-      const brackets = (s) => `[${s}]`;
-     
-      // Read the format string from the locale data
-
-      console.debug("format: ", ehom.i18n.addressData[countryCode].fmt);
-
       const addressData = ehom.i18n.addressData[countryCode];
       const defaultData = ehom.i18n.addressData['ZZ'];
-      const upperRequired = addressData.upper || defaultData.upper
+      const upperRequired = addressData.upper || defaultData.upper;
 
+      // Read the format string from the locale data
+      const fmt = addressData.fmt || defaultData.fmt;
 
-      let address = '[address]';
+      const upperCase = (fieldType, text) => {
+        return (upperRequired.indexOf(fieldType) >= 0) ?
+          text.toUpperCase() : text;
+      };
 
-      if (upperRequired.indexOf("A") !== -1) {
-        address = address.toUpperCase();
-      }
+      let address = brackets('address');
+      let org = brackets('organization');
+      let name = brackets('name');
+      let sortCode = brackets('sort code');
 
-      let fmt = ehom.i18n.addressData[countryCode].fmt;
-      let output = fmt.replace("%N", "[name]")
-                      .replace("%O", '[organization]')
+      address = upperCase("A", address);
+      org = upperCase("O", org);
+      name = upperCase("N", name);
+      sortCode = upperCase("X", sortCode);
+
+      let locality_name_type = addressData.locality_name_type || defaultData.locality_name_type;
+      let state_name_type = addressData['state_name_type'] || defaultData.state_name_type;
+      let sublocality_name_type = addressData.sublocality_name_type || defaultData.sublocality_name_type;
+      let zip_name_type = addressData.zip_name_type || defaultData.zip_name_type;
+      zip_name_type = `${zip_name_type} code`;
+
+      let output = fmt.replace("%N", name)
+                      .replace("%O", org)
                       .replace("%A", address)
                       .replace(/%n/g, '\n')
-                      .replace(/%X/g, '[sort code]')
-
-      let locality_name_type = addressData.locality_name_type ?
-        addressData.locality_name_type : defaultData.locality_name_type; 
-
-      if (upperRequired.indexOf("C") !== -1) {
-        locality_name_type = locality_name_type.toUpperCase();
-      }
-
-      output = output.replace('%C', brackets(locality_name_type));
-
-      output = output.replace("%D",
-        addressData.sublocality_name_type ? 
-          brackets(addressData.sublocality_name_type):
-          brackets(defaultData.sublocality_name_type)
-      );
-
-
-      let state_name_type = addressData['state_name_type'] ?
-          brackets(addressData.state_name_type):
-          brackets(defaultData.state_name_type);
-
-      if (upperRequired.indexOf("S") !== -1) {
-        state_name_type = state_name_type.toUpperCase();
-      }
-
-      output = output.replace("%S", state_name_type);
-
-      let result = addressData.zip_name_type ? addressData.zip_name_type : defaultData.zip_name_type;
-      output = output.replace("%Z", brackets(`${result} code`));
-
+                      .replace(/%X/g, sortCode)
+                      .replace('%C', brackets(upperCase("C", locality_name_type)))
+                      .replace("%S", brackets(upperCase("S", state_name_type)))
+                      .replace("%D", brackets(upperCase("D", sublocality_name_type)))
+                      .replace("%Z", brackets(upperCase("Z", zip_name_type)));
       return output.split("\n");
     },
 
