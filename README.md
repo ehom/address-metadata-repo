@@ -1,3 +1,3 @@
-![CI](https://github.com/ehom/postal-address-data/workflows/CI/badge.svg)
+![CI](https://github.com/ehom/postal-metadata-repo/workflows/CI/badge.svg)
 
-# address-data-explorer
+# address-metadata-repo
